@@ -19,7 +19,7 @@ guess++
 }
 
 function lingo() {
-    addBoxes()
+    
     //Lingo logica. 
     var inputWord = document.getElementById("inputWord").value;
     inputWord = inputWord.split("")
@@ -41,4 +41,5 @@ function lingo() {
         document.getElementById(i).id = ""
     }
     storageWord = [...word]
+    addBoxes()
 }
