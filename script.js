@@ -1,23 +1,23 @@
 var randomWord = words[Math.floor(Math.random() * words.length)];
-var word = [...words[0].split('')];
-var storageWord = [...words[0].split('')];
+console.log(randomWord)
+var word = [...randomWord.split('')];
+var storageWord = [...randomWord.split('')];
 var guess = 0;
 var counter = 0;
 // Maak boxes aan om letters in te stoppen.
 addBoxes()
 function addBoxes() {
     counter++
-    console.log(counter)
     var list = document.createElement("ul");
     list.id = "guess " + guess
     document.getElementById('wordlist').appendChild(list)
     for (i = 0; i < 5; i++) {
         var item = document.createElement("li");
-        item.id = i
+        item.id = "letter" + i
         document.getElementById("guess " + guess).appendChild(item)
     }
-    document.getElementById(0).innerHTML = word[0]
-    document.getElementById(0).style.BackgroundColor = "Green"
+    document.getElementById(`letter${0}`).innerHTML = word[0]
+    document.getElementById(`letter${0}`).color = "green"
     guess++
 }
 function lingo() {
@@ -25,38 +25,37 @@ function lingo() {
     var inputWord = document.getElementById("inputWord").value;
     inputWord = inputWord.split("")
     for (let i = 0; i < word.length; i++) {
-        document.getElementById(i).innerHTML = inputWord[i];
-        document.getElementById(i).style.backgroundColor = "white"
+        document.getElementById(`letter${i}`).innerHTML = inputWord[i];
+        document.getElementById(`letter${i}`).style.backgroundColor = "white"
         if (storageWord[i] === inputWord[i]) {
-            document.getElementById(i).style.backgroundColor = "Green"
+            document.getElementById(`letter${i}`).style.backgroundColor = "Green"
             storageWord[i] = ''
         }
     }
+    if (storageWord.every(element => element === '')){
+        var win = true;
+        setTimeout(function(){
+            alert("won");
+            location.reload();},3000)
+    }
     for (i = 0; i < storageWord.length; i++) {
         if (storageWord.includes(inputWord[i])) {
-            document.getElementById(i).style.backgroundColor = "Orange"
+            document.getElementById(`letter${i}`).style.backgroundColor = "Orange"
             storageWord[word.indexOf(inputWord[i])] = ''
         }
     }
-    if (storageWord.every(element => element === '')&& counter != 5) {
-        setTimeout(function () {
-            var img = document.createElement("img")
-            img.src = "media/win.gif"
-            document.body.appendChild(img)
-            setTimeout(function () {
-                img.remove()
-                location.reload()
-            }, 15000);
-        }, 1000);
-        var audio = new Audio('media/win.mp3');
-        audio.play();
-    }else if(counter == 5){
+    for (i = 0; i < 5; i++) {
+        document.getElementById(`letter${i}`).id = ""
 
-    }else {
-        for (i = 0; i < 5; i++) {
-            document.getElementById(i).id = ""
-            storageWord = [...word]
-            addBoxes()
-        }
     }
-}
+    if(win != true && counter != 6){
+        storageWord = [...word]
+        addBoxes()
+    }
+    if(counter == 6){
+        setTimeout(function(){
+            alert(`${word} Was het correcte woord volgende keer beter `);
+            location.reload();},3000)
+    }
+    }
+
